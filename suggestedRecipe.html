@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        #mainDiv {
+            margin-left: 10px;
+            border-style: solid;
+            border-width: 2px;
+            border-color: black;
+            background: #f5f5dc;
+            padding: 10px 20px 10px 20px;
+            width: 300px;
+            border-radius: 20px;
+            float: left;
+        }
+    </style>
+</head>
+
+<body>
+    <label>First Ingredient
+      <select id="firstIng">
+        <option>-- Select an ingradient --</option>
+        <option>eggs</option>
+        <option>cherry tomatos</option>
+        <option>olive oil</option>
+        <option>oregano</option>
+        <option>chicken</option>
+      </select>
+    </label>
+    <label>Second Ingredient
+      <select id="secIng">
+        <option>-- Select an ingradient --</option>
+        <option>eggs</option>
+        <option>cherry tomatos</option>
+        <option>olive oil</option>
+        <option>oregano</option>
+        <option>chicken</option>
+      </select> </label
+    ><br /><br />
+    <button type="button" id="submit" onclick="showxml()">Find Recipe by Ingredients</button>
+    <br /><br />
+    <div id="mainDiv"></div>
+
+    <script>
+		function showxml(){
+			var oXHR = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
+
+			function reportStatus() {
+				if (oXHR.readyState == 4)
+				showTheList(this.responseXML);
+			}
+
+			oXHR.onreadystatechange = reportStatus;
+			oXHR.open("GET", "cookBook.xml", true);
+			oXHR.send();
+
+			function showTheList(xml) {
+				var divBooks = document.getElementById('cookbook'); 
+				var title1 = xml.getElementsByTagName('title');
+
+				var ing = xml.getElementsByTagName('name');
+
+				var q=document.getElementById('firstIng').value;
+
+				var w=document.getElementById('secIng').value;
+
+				var main1='';
+				if(q=='olive oil'||w=='olive oil'){
+					document.getElementById('mainDiv').innerHTML=title1[0].textContent+"<br>"+title1[1].textContent
+					return;
+				}
+				else if(ing[0].textContent==q||ing[1].textContent==q||ing[2].textContent==q){
+					main1+=title1[0].textContent
+				}
+				else if(ing[3].textContent==q||ing[4].textContent==q||ing[5].textContent==q){
+					main1+=title1[1].textContent
+				}
+
+				if(ing[0].textContent==w||ing[1].textContent==w||ing[2].textContent==w){
+					if(main1!=title1[0].textContent)
+					main1+="<br>"+title1[0].textContent
+				}
+				else if(ing[3].textContent==w||ing[4].textContent==w||ing[5].textContent==w){
+					if(main1!=title1[1].textContent)
+					main1+="<br>"+title1[1].textContent
+				}
+
+				document.getElementById('mainDiv').innerHTML=main1
+			}
+		}
+    </script>
+  </body>
+</html>
